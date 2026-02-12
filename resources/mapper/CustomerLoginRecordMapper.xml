@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.login.mapper.CustomerLoginRecordMapper">
+
+    <resultMap id="LoginRecordVoMap" type="com.pramaindia.login.model.vo.LoginRecordVo">
+        <id property="id" column="id"/>
+        <result property="sapId" column="sap_id"/>
+        <result property="loginEmail" column="login_email"/>
+        <result property="companyName" column="company_name"/>
+        <result property="region" column="region"/>
+        <result property="branch" column="branch"/>
+        <result property="district" column="district"/>
+        <result property="clientIp" column="client_ip"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="logoutTime" column="logout_time"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="status" column="status"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+
+    <resultMap id="LoginRecordEntityMap" type="com.pramaindia.login.model.entity.LoginRecordEntity">
+        <id property="id" column="id"/>
+        <result property="sapId" column="sap_id"/>
+        <result property="loginEmail" column="login_email"/>
+        <result property="companyName" column="company_name"/>
+        <result property="region" column="region"/>
+        <result property="branch" column="branch"/>
+        <result property="district" column="district"/>
+        <result property="clientIp" column="client_ip"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="logoutTime" column="logout_time"/>
+        <result property="sessionId" column="session_id"/>
+        <result property="status" column="status"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sap_id, login_email, company_name, region, branch, district,
+        client_ip, login_time, logout_time, session_id, status, created_time
+    </sql>
+
+    <select id="getLoginRecords" resultMap="LoginRecordVoMap" parameterType="com.pramaindia.login.model.dto.LoginRecordRequestDto">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user_login_record
+        WHERE 1=1
+        <if test="sapId != null and sapId != ''">
+            AND sap_id = #{sapId}
+        </if>
+        <if test="loginEmail != null and loginEmail != ''">
+            AND login_email LIKE CONCAT('%', #{loginEmail}, '%')
+        </if>
+        <if test="companyName != null and companyName != ''">
+            AND company_name LIKE CONCAT('%', #{companyName}, '%')
+        </if>
+        <if test="region != null and region != ''">
+            AND region = #{region}
+        </if>
+        <if test="branch != null and branch != ''">
+            AND branch = #{branch}
+        </if>
+        <if test="district != null and district != ''">
+            AND district = #{district}
+        </if>
+        <if test="clientIp != null and clientIp != ''">
+            AND client_ip = #{clientIp}
+        </if>
+        <if test="startTime != null">
+            AND login_time &gt;= DATEADD('SECOND', #{startTime} / 1000, '1970-01-01')
+        </if>
+        <if test="endTime != null">
+            AND login_time &lt;= DATEADD('SECOND', #{endTime} / 1000, '1970-01-01')
+        </if>
+        <if test="showOnlyActive != null and showOnlyActive">
+            AND status = 1
+        </if>
+        <if test="showOnlyToday != null and showOnlyToday">
+            AND DATE(login_time) = CURRENT_DATE()
+        </if>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+            sap_id LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR login_email LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR company_name LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR client_ip LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
+        </if>
+        <choose>
+            <when test="sortField == 'logoutTime'">
+                ORDER BY logout_time ${sortOrder}
+            </when>
+            <when test="sortField == 'companyName'">
+                ORDER BY company_name ${sortOrder}
+            </when>
+            <when test="sortField == 'loginEmail'">
+                ORDER BY login_email ${sortOrder}
+            </when>
+            <when test="sortField == 'region'">
+                ORDER BY region ${sortOrder}
+            </when>
+            <otherwise>
+                ORDER BY login_time ${sortOrder}
+            </otherwise>
+        </choose>
+        LIMIT #{pageSize}
+        OFFSET (#{pageNum} - 1) * #{pageSize}
+    </select>
+
+    <select id="countLoginRecords" resultType="java.lang.Long" parameterType="com.pramaindia.login.model.dto.LoginRecordRequestDto">
+        SELECT COUNT(*) FROM sso_user_login_record
+        WHERE 1=1
+        <if test="sapId != null and sapId != ''">
+            AND sap_id = #{sapId}
+        </if>
+        <if test="loginEmail != null and loginEmail != ''">
+            AND login_email LIKE CONCAT('%', #{loginEmail}, '%')
+        </if>
+        <if test="companyName != null and companyName != ''">
+            AND company_name LIKE CONCAT('%', #{companyName}, '%')
+        </if>
+        <if test="region != null and region != ''">
+            AND region = #{region}
+        </if>
+        <if test="branch != null and branch != ''">
+            AND branch = #{branch}
+        </if>
+        <if test="district != null and district != ''">
+            AND district = #{district}
+        </if>
+        <if test="clientIp != null and clientIp != ''">
+            AND client_ip = #{clientIp}
+        </if>
+        <if test="startTime != null">
+            AND login_time &gt;= DATEADD('SECOND', #{startTime} / 1000, '1970-01-01')
+        </if>
+        <if test="endTime != null">
+            AND login_time &lt;= DATEADD('SECOND', #{endTime} / 1000, '1970-01-01')
+        </if>
+        <if test="showOnlyActive != null and showOnlyActive">
+            AND status = 1
+        </if>
+        <if test="showOnlyToday != null and showOnlyToday">
+            AND DATE(login_time) = CURRENT_DATE()
+        </if>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+            sap_id LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR login_email LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR company_name LIKE CONCAT('%', #{searchKeyword}, '%')
+            OR client_ip LIKE CONCAT('%', #{searchKeyword}, '%')
+            )
+        </if>
+    </select>
+
+    <select id="getActiveSessions" resultMap="LoginRecordVoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user_login_record
+        WHERE status = 1
+        ORDER BY login_time DESC
+    </select>
+
+    <select id="findBySessionId" resultMap="LoginRecordVoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user_login_record
+        WHERE session_id = #{sessionId}
+    </select>
+
+    <select id="findActiveSession" resultMap="LoginRecordEntityMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user_login_record
+        WHERE session_id = #{sessionId} AND status = 1
+        LIMIT 1
+    </select>
+
+    <select id="findByLoginEmail" resultMap="LoginRecordVoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user_login_record
+        WHERE login_email = #{loginEmail}
+        ORDER BY login_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <insert id="insertLoginRecord" parameterType="com.pramaindia.login.model.entity.LoginRecordEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sso_user_login_record
+        (sap_id, login_email, company_name, region, branch, district,
+        client_ip, login_time, logout_time, session_id, status, created_time)
+        VALUES
+        (#{sapId}, #{loginEmail}, #{companyName}, #{region}, #{branch}, #{district},
+        #{clientIp}, #{loginTime}, #{logoutTime}, #{sessionId}, #{status}, #{createdTime})
+    </insert>
+
+    <update id="updateLogoutTime">
+        UPDATE sso_user_login_record
+        SET logout_time = #{logoutTime}, status = 0
+        WHERE session_id = #{sessionId} AND status = 1
+    </update>
+
+    <update id="updateLoginRecord" parameterType="com.pramaindia.login.model.entity.LoginRecordEntity">
+        UPDATE sso_user_login_record
+        SET
+        sap_id = #{sapId},
+        login_email = #{loginEmail},
+        company_name = #{companyName},
+        region = #{region},
+        branch = #{branch},
+        district = #{district},
+        client_ip = #{clientIp},
+        login_time = #{loginTime},
+        logout_time = #{logoutTime},
+        status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteOldRecords">
+        DELETE FROM sso_user_login_record
+        WHERE created_time &lt; DATEADD('DAY', -90, CURRENT_TIMESTAMP)
+    </delete>
+
+    <select id="getLoginStats" resultType="map">
+        SELECT
+        DATE(login_time) as login_date,
+        COUNT(*) as login_count,
+        COUNT(DISTINCT login_email) as unique_users,
+        COUNT(DISTINCT sap_id) as unique_companies,
+        ROUND(AVG(
+        CASE
+        WHEN logout_time IS NOT NULL
+        THEN TIMESTAMPDIFF(SECOND, login_time, logout_time)
+        ELSE NULL
+        END
+        ), 2) as avg_session_duration_seconds
+        FROM sso_user_login_record
+        WHERE login_time &gt;= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
+        GROUP BY DATE(login_time)
+        ORDER BY login_date DESC
+    </select>
+
+    <select id="getTopCompaniesByLoginCount" resultType="map">
+        SELECT
+        sap_id,
+        company_name,
+        COUNT(*) as login_count,
+        COUNT(DISTINCT login_email) as unique_users,
+        MAX(login_time) as last_login_time
+        FROM sso_user_login_record
+        WHERE login_time &gt;= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
+        GROUP BY sap_id, company_name
+        ORDER BY login_count DESC
+        LIMIT 10
+    </select>
+
+    <select id="getHourlyLoginStats" resultType="map">
+        SELECT
+        HOUR(login_time) as login_hour,
+        COUNT(*) as login_count
+        FROM sso_user_login_record
+        WHERE login_time &gt;= DATEADD('DAY', -7, CURRENT_TIMESTAMP)
+        GROUP BY HOUR(login_time)
+        ORDER BY login_hour
+    </select>
+
+    <select id="getRegionWiseStats" resultType="map">
+        SELECT
+        region,
+        COUNT(*) as login_count,
+        COUNT(DISTINCT sap_id) as company_count,
+        COUNT(DISTINCT login_email) as user_count
+        FROM sso_user_login_record
+        WHERE login_time &gt;= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
+        AND region IS NOT NULL
+        GROUP BY region
+        ORDER BY login_count DESC
+    </select>
+
+    <select id="getLongestActiveSessions" resultMap="LoginRecordVoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user_login_record
+        WHERE status = 1
+        AND login_time &lt; DATEADD('HOUR', -4, CURRENT_TIMESTAMP)
+        ORDER BY login_time ASC
+    </select>
+
+    <select id="getRecentLoginsByCompany" resultMap="LoginRecordVoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user_login_record
+        WHERE sap_id = #{sapId}
+        ORDER BY login_time DESC
+        LIMIT #{limit}
+    </select>
+
+    <update id="markStaleSessionsAsLogout">
+        UPDATE sso_user_login_record
+        SET
+        status = 0,
+        logout_time = DATEADD('HOUR', -1, CURRENT_TIMESTAMP)
+        WHERE status = 1
+        AND login_time &lt; DATEADD('HOUR', -8, CURRENT_TIMESTAMP)
+    </update>
+
+</mapper>

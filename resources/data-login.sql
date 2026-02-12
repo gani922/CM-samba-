@@ -1,0 +1,26 @@
+---- Insert test login records
+--INSERT INTO sso_user_login_record
+--(sap_id, login_email, company_name, region, branch, district, client_ip, login_time, logout_time, session_id, status)
+--VALUES
+--('8304', 'user1@company.com', 'Hikvision India', 'North', 'Delhi', 'Central', '192.168.1.100',
+-- DATEADD('DAY', -1, CURRENT_TIMESTAMP), DATEADD('HOUR', -23, CURRENT_TIMESTAMP), 'session001', 0),
+--('8305', 'user2@company.com', 'Tech Solutions', 'South', 'Bangalore', 'East', '192.168.1.101',
+-- DATEADD('DAY', -2, CURRENT_TIMESTAMP), DATEADD('HOUR', -46, CURRENT_TIMESTAMP), 'session002', 0),
+--('8304', 'user1@company.com', 'Hikvision India', 'North', 'Delhi', 'Central', '192.168.1.100',
+-- DATEADD('HOUR', -1, CURRENT_TIMESTAMP), NULL, 'session003', 1);
+--
+---- Insert company data
+--INSERT INTO company (sap_id, company_name, region, branch, district)
+--VALUES
+--('8304', 'Hikvision India', 'North', 'Delhi', 'Central'),
+--('8305', 'Tech Solutions', 'South', 'Bangalore', 'East'),
+--('8306', 'Prama India', 'West', 'Mumbai', 'South'),
+--('8307', 'Global Tech', 'East', 'Kolkata', 'North');
+--
+---- Insert user data
+--INSERT INTO sso_user (email, first_name, last_name, company_sap_id)
+--VALUES
+--('user1@company.com', 'John', 'Doe', '8304'),
+--('user2@company.com', 'Jane', 'Smith', '8305'),
+--('admin@pramaindia.com', 'Admin', 'User', '8306'),
+--('manager@globaltech.com', 'Manager', 'User', '8307');

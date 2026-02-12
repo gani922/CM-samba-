@@ -1,0 +1,16 @@
+---- Clear existing data
+--DELETE FROM jwt_blacklist;
+--DELETE FROM bu_info;
+--DELETE FROM admin_login_info;
+--
+---- Insert admin users with BCrypt hashed password "password"
+--INSERT INTO admin_login_info (admin_id, username, password_hash, email, full_name, role, phone_number, department, is_active, reset_token, token_expiry) VALUES
+--('ADM001', 'sambasiva', '$2a$12$vXZRN8Fs3sqKYR8VDqKN9Ofm70ciFMT7rPw3JPHbIZs4py6LRE2QW', 'reachme318151@gmail.com', 'Administrator', 'SUPER_ADMIN', '+911234567890', 'IT', TRUE, NULL, NULL),
+--('ADM002', 'manager', '$2a$12$vXZRN8Fs3sqKYR8VDqKN9Ofm70ciFMT7rPw3JPHbIZs4py6LRE2QW', 'potharajuganesh8@gmail.com', 'Manager User', 'MANAGER', '+919876543210', 'Sales', TRUE, NULL, NULL),
+--('ADM003', 'user', '$2a$12$vXZRN8Fs3sqKYR8VDqKN9Ofm70ciFMT7rPw3JPHbIZs4py6LRE2QW', 'user@company.com', 'Regular User', 'USER', '+911111111111', 'Operations', TRUE, NULL, NULL);
+--
+---- Insert business units
+--INSERT INTO bu_info (name, friendly_name, layer, admin_id, bu_admin_id) VALUES
+--('India Business Unit', 'india_bu', 1, 'ADM001', 48851),
+--('USA Business Unit', 'usa_bu', 1, 'ADM001', 48852),
+--('Europe Business Unit', 'europe_bu', 1, 'ADM002', 48853);

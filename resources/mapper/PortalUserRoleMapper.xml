@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.role_management.dao.PortalUserRoleDAO">
+
+    <resultMap id="portalUserRoleResultMap" type="com.pramaindia.role_management.model.PortalUserRoleDO">
+        <result property="userId" column="USER_ID" />
+        <result property="roleId" column="ROLE_ID" />
+    </resultMap>
+
+    <select id="selectByUserId" parameterType="Long" resultMap="portalUserRoleResultMap">
+        SELECT * FROM PORTAL_USER_ROLE WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="selectByRoleId" parameterType="Long" resultMap="portalUserRoleResultMap">
+        SELECT * FROM PORTAL_USER_ROLE WHERE ROLE_ID = #{roleId}
+    </select>
+
+    <insert id="insert" parameterType="com.pramaindia.role_management.model.PortalUserRoleDO">
+        INSERT INTO PORTAL_USER_ROLE (USER_ID, ROLE_ID)
+        VALUES (#{userId}, #{roleId})
+    </insert>
+
+    <delete id="deleteByRoleId" parameterType="Long">
+        DELETE FROM PORTAL_USER_ROLE WHERE ROLE_ID = #{roleId}
+    </delete>
+
+    <delete id="deleteByUserId" parameterType="Long">
+        DELETE FROM PORTAL_USER_ROLE WHERE USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteByUserAndRole">
+        DELETE FROM PORTAL_USER_ROLE
+        WHERE USER_ID = #{userId} AND ROLE_ID = #{roleId}
+    </delete>
+
+</mapper>

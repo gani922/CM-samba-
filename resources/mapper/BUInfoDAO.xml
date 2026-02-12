@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pramaindia.customer_management.dao.BUInfoDAO">
+
+    <resultMap id="BUInfoResultMap" type="com.pramaindia.customer_management.dto.BUInfoDTO">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="friendlyName" column="friendly_name"/>
+        <result property="layer" column="layer"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="deleteStatus" column="delete_status"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="creationTime" column="creation_time"/>
+        <result property="modifiedBy" column="modified_by"/>
+        <result property="modificationTime" column="modification_time"/>
+        <result property="saleOrganizeId" column="sale_organize_id"/>
+        <result property="buAdminId" column="bu_admin_id"/>
+        <result property="adminId" column="admin_id"/>
+        <!-- CHANGE: For sub-BUs (layer=2), buId should be parentId (5) -->
+        <result property="buId" column="bu_id"/>
+    </resultMap>
+
+    <!-- Add this method to get sub-BUs with parent BU ID=5 -->
+    <select id="getSubBUsWithParentId5" resultMap="BUInfoResultMap">
+        SELECT
+        id,
+        name,
+        friendly_name,
+        layer,
+        COALESCE(parent_id, 0) as parent_id,
+        delete_status,
+        created_by,
+        <!-- H2 specific timestamp to milliseconds conversion -->
+        CAST((EXTRACT(EPOCH FROM creation_time) * 1000) AS BIGINT) as creation_time,
+        modified_by,
+        CAST((EXTRACT(EPOCH FROM modification_time) * 1000) AS BIGINT) as modification_time,
+        sale_organize_id,
+        bu_admin_id,
+        admin_id,
+        <!-- CHANGED: For sub-BUs (layer=2), return parent_id as buId -->
+        CASE
+        WHEN layer = 2 AND parent_id = 5 THEN 5
+        ELSE id
+        END as bu_id
+        FROM bu_info
+        WHERE admin_id = #{adminId}
+        AND (delete_status IS NULL OR delete_status = '0')
+        AND layer = 2  <!-- Only get sub-BUs -->
+        AND parent_id = 5  <!-- Only those under BU_ID=5 -->
+        ORDER BY name
+    </select>
+
+    <!-- Update existing method to handle both parent and sub-BUs -->
+    <select id="getBUsByAdminId" resultMap="BUInfoResultMap">
+        SELECT
+        id,
+        name,
+        friendly_name,
+        layer,
+        COALESCE(parent_id, 0) as parent_id,
+        delete_status,
+        created_by,
+        <!-- H2 specific timestamp to milliseconds conversion -->
+        CAST((EXTRACT(EPOCH FROM creation_time) * 1000) AS BIGINT) as creation_time,
+        modified_by,
+        CAST((EXTRACT(EPOCH FROM modification_time) * 1000) AS BIGINT) as modification_time,
+        sale_organize_id,
+        bu_admin_id,
+        admin_id,
+        <!-- CHANGED: For sub-BUs (layer=2), return parent_id as buId -->
+        CASE
+        WHEN layer = 2 AND parent_id = 5 THEN 5  <!-- Sub-BUs under BU_ID=5 -->
+        WHEN layer = 2 AND parent_id IS NOT NULL THEN parent_id  <!-- Other sub-BUs use parent ID -->
+        ELSE id  <!-- Main BUs use their own ID -->
+        END as bu_id
+        FROM bu_info
+        WHERE admin_id = #{adminId}
+        AND (delete_status IS NULL OR delete_status = '0')
+        ORDER BY layer, name
+    </select>
+
+</mapper>

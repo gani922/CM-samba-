@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.login.mapper.CompanyMapper">
+
+    <resultMap id="CompanyMap" type="com.pramaindia.login.model.entity.CompanyEntity">
+        <id property="sapId" column="sap_id"/>
+        <result property="companyName" column="company_name"/>
+        <result property="region" column="region"/>
+        <result property="branch" column="branch"/>
+        <result property="district" column="district"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="status" column="status"/>
+        <result property="contactPerson" column="contact_person"/>
+        <result property="contactEmail" column="contact_email"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="address" column="address"/>
+        <result property="city" column="city"/>
+        <result property="state" column="state"/>
+        <result property="country" column="country"/>
+        <result property="postalCode" column="postal_code"/>
+        <result property="industryType" column="industry_type"/>
+        <result property="companySize" column="company_size"/>
+        <result property="website" column="website"/>
+        <result property="notes" column="notes"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sap_id, company_name, region, branch, district, created_time, updated_time,
+        status, contact_person, contact_email, contact_phone, address, city, state,
+        country, postal_code, industry_type, company_size, website, notes
+    </sql>
+
+    <select id="findBySapId" resultMap="CompanyMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM company
+        WHERE sap_id = #{sapId}
+    </select>
+
+    <select id="findByCompanyName" resultMap="CompanyMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM company
+        WHERE company_name LIKE CONCAT('%', #{companyName}, '%')
+        AND status = 'ACTIVE'
+    </select>
+
+    <select id="findAllCompanies" resultMap="CompanyMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM company
+        WHERE status = 'ACTIVE'
+        ORDER BY company_name
+    </select>
+
+    <select id="findByRegion" resultMap="CompanyMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM company
+        WHERE region = #{region}
+        AND status = 'ACTIVE'
+    </select>
+
+    <select id="searchCompanies" resultMap="CompanyMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM company
+        WHERE status = 'ACTIVE'
+        <if test="sapId != null and sapId != ''">
+            AND sap_id LIKE CONCAT('%', #{sapId}, '%')
+        </if>
+        <if test="companyName != null and companyName != ''">
+            AND company_name LIKE CONCAT('%', #{companyName}, '%')
+        </if>
+        <if test="region != null and region != ''">
+            AND region = #{region}
+        </if>
+        <if test="branch != null and branch != ''">
+            AND branch = #{branch}
+        </if>
+        <if test="district != null and district != ''">
+            AND district = #{district}
+        </if>
+        <if test="city != null and city != ''">
+            AND city = #{city}
+        </if>
+        <if test="state != null and state != ''">
+            AND state = #{state}
+        </if>
+        <if test="country != null and country != ''">
+            AND country = #{country}
+        </if>
+        ORDER BY company_name
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <insert id="insertCompany" parameterType="com.pramaindia.login.model.entity.CompanyEntity">
+        INSERT INTO company (
+        sap_id, company_name, region, branch, district, created_time,
+        status, contact_person, contact_email, contact_phone, address,
+        city, state, country, postal_code, industry_type, company_size,
+        website, notes
+        ) VALUES (
+        #{sapId}, #{companyName}, #{region}, #{branch}, #{district},
+        #{createdTime}, #{status}, #{contactPerson}, #{contactEmail},
+        #{contactPhone}, #{address}, #{city}, #{state}, #{country},
+        #{postalCode}, #{industryType}, #{companySize}, #{website}, #{notes}
+        )
+    </insert>
+
+    <update id="updateCompany" parameterType="com.pramaindia.login.model.entity.CompanyEntity">
+        UPDATE company
+        SET
+        company_name = #{companyName},
+        region = #{region},
+        branch = #{branch},
+        district = #{district},
+        updated_time = #{updatedTime},
+        status = #{status},
+        contact_person = #{contactPerson},
+        contact_email = #{contactEmail},
+        contact_phone = #{contactPhone},
+        address = #{address},
+        city = #{city},
+        state = #{state},
+        country = #{country},
+        postal_code = #{postalCode},
+        industry_type = #{industryType},
+        company_size = #{companySize},
+        website = #{website},
+        notes = #{notes}
+        WHERE sap_id = #{sapId}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE company
+        SET status = #{status}, updated_time = NOW()
+        WHERE sap_id = #{sapId}
+    </update>
+
+    <delete id="deleteBySapId">
+        DELETE FROM company WHERE sap_id = #{sapId}
+    </delete>
+
+    <select id="countCompanies" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM company
+        WHERE status = 'ACTIVE'
+        <if test="region != null and region != ''">
+            AND region = #{region}
+        </if>
+        <if test="branch != null and branch != ''">
+            AND branch = #{branch}
+        </if>
+    </select>
+
+    <select id="getCompanyStats" resultType="map">
+        SELECT
+        region,
+        COUNT(*) as company_count,
+        COUNT(DISTINCT branch) as branch_count,
+        COUNT(DISTINCT district) as district_count
+        FROM company
+        WHERE status = 'ACTIVE'
+        GROUP BY region
+        ORDER BY company_count DESC
+    </select>
+
+    <select id="findCompaniesWithNoRecentLogins" resultMap="CompanyMap">
+        SELECT c.* FROM company c
+        LEFT JOIN sso_user_login_record l ON c.sap_id = l.sap_id
+        WHERE c.status = 'ACTIVE'
+        AND (l.login_time IS NULL OR l.login_time &lt; DATE_SUB(NOW(), INTERVAL 30 DAY))
+        GROUP BY c.sap_id
+        ORDER BY c.company_name
+    </select>
+
+</mapper>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.login.mapper.SsoUserMapper">
+
+    <resultMap id="SsoUserMap" type="com.pramaindia.login.model.entity.SsoUserEntity">
+        <id property="email" column="email"/>
+        <result property="firstName" column="first_name"/>
+        <result property="lastName" column="last_name"/>
+        <result property="companySapId" column="company_sap_id"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="department" column="department"/>
+        <result property="designation" column="designation"/>
+        <result property="isActive" column="is_active"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        email, first_name, last_name, company_sap_id, phone_number, department,
+        designation, is_active, last_login_time, created_time, updated_time
+    </sql>
+
+    <select id="findByEmail" resultMap="SsoUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user
+        WHERE email = #{email}
+    </select>
+
+    <select id="findByCompanySapId" resultMap="SsoUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user
+        WHERE company_sap_id = #{companySapId}
+        AND is_active = true
+        ORDER BY last_name, first_name
+    </select>
+
+    <select id="findAllUsers" resultMap="SsoUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user
+        WHERE is_active = true
+        ORDER BY last_name, first_name
+    </select>
+
+    <select id="findInactiveUsers" resultMap="SsoUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user
+        WHERE is_active = false
+        OR last_login_time &lt; DATEADD('DAY', -90, CURRENT_TIMESTAMP)
+        ORDER BY last_login_time DESC
+    </select>
+
+    <insert id="insertSsoUser" parameterType="com.pramaindia.login.model.entity.SsoUserEntity">
+        INSERT INTO sso_user (
+        email, first_name, last_name, company_sap_id, phone_number,
+        department, designation, is_active, last_login_time,
+        created_time, updated_time
+        ) VALUES (
+        #{email}, #{firstName}, #{lastName}, #{companySapId}, #{phoneNumber},
+        #{department}, #{designation}, #{isActive}, #{lastLoginTime},
+        #{createdTime}, #{updatedTime}
+        )
+    </insert>
+
+    <update id="updateSsoUser" parameterType="com.pramaindia.login.model.entity.SsoUserEntity">
+        UPDATE sso_user
+        SET
+        first_name = #{firstName},
+        last_name = #{lastName},
+        company_sap_id = #{companySapId},
+        phone_number = #{phoneNumber},
+        department = #{department},
+        designation = #{designation},
+        is_active = #{isActive},
+        last_login_time = #{lastLoginTime},
+        updated_time = #{updatedTime}
+        WHERE email = #{email}
+    </update>
+
+    <update id="updateLastLoginTime">
+        UPDATE sso_user
+        SET last_login_time = #{lastLoginTime}
+        WHERE email = #{email}
+    </update>
+
+    <update id="updateUserStatus">
+        UPDATE sso_user
+        SET is_active = #{isActive}, updated_time = CURRENT_TIMESTAMP
+        WHERE email = #{email}
+    </update>
+
+    <delete id="deleteByEmail">
+        DELETE FROM sso_user WHERE email = #{email}
+    </delete>
+
+    <select id="searchUsers" resultMap="SsoUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user
+        WHERE 1=1
+        <if test="email != null and email != ''">
+            AND email LIKE CONCAT('%', #{email}, '%')
+        </if>
+        <if test="firstName != null and firstName != ''">
+            AND first_name LIKE CONCAT('%', #{firstName}, '%')
+        </if>
+        <if test="lastName != null and lastName != ''">
+            AND last_name LIKE CONCAT('%', #{lastName}, '%')
+        </if>
+        <if test="companySapId != null and companySapId != ''">
+            AND company_sap_id = #{companySapId}
+        </if>
+        <if test="department != null and department != ''">
+            AND department = #{department}
+        </if>
+        <if test="isActive != null">
+            AND is_active = #{isActive}
+        </if>
+        ORDER BY last_name, first_name
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <select id="countUsers" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sso_user
+        WHERE is_active = true
+        <if test="companySapId != null and companySapId != ''">
+            AND company_sap_id = #{companySapId}
+        </if>
+        <if test="department != null and department != ''">
+            AND department = #{department}
+        </if>
+    </select>
+
+    <select id="getUserLoginStats" resultType="map">
+        SELECT
+        u.email,
+        u.first_name,
+        u.last_name,
+        u.company_sap_id,
+        COUNT(l.id) as login_count,
+        MAX(l.login_time) as last_login_time,
+        COUNT(CASE WHEN l.status = 1 THEN 1 END) as active_sessions
+        FROM sso_user u
+        LEFT JOIN sso_user_login_record l ON u.email = l.login_email
+        WHERE u.is_active = true
+        AND l.login_time &gt;= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
+        GROUP BY u.email, u.first_name, u.last_name, u.company_sap_id
+        ORDER BY login_count DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="getUsersWithNoRecentLogins" resultMap="SsoUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user u
+        WHERE u.is_active = true
+        AND (
+        u.last_login_time IS NULL
+        OR u.last_login_time &lt; DATEADD('DAY', -30, CURRENT_TIMESTAMP)
+        )
+        ORDER BY u.last_login_time DESC
+    </select>
+
+    <select id="getUsersByLoginFrequency" resultType="map">
+        SELECT
+        u.email,
+        u.first_name,
+        u.last_name,
+        u.department,
+        COUNT(l.id) as login_count,
+        AVG(
+        CASE
+        WHEN l.logout_time IS NOT NULL
+        THEN TIMESTAMPDIFF(SECOND, l.login_time, l.logout_time)
+        ELSE NULL
+        END
+        ) as avg_session_duration
+        FROM sso_user u
+        LEFT JOIN sso_user_login_record l ON u.email = l.login_email
+        WHERE u.is_active = true
+        AND l.login_time &gt;= DATEADD('DAY', -30, CURRENT_TIMESTAMP)
+        GROUP BY u.email, u.first_name, u.last_name, u.department
+        HAVING login_count > 0
+        ORDER BY login_count DESC
+        LIMIT #{limit}
+    </select>
+
+    <update id="bulkUpdateUserStatus">
+        UPDATE sso_user
+        SET is_active = #{isActive}, updated_time = CURRENT_TIMESTAMP
+        WHERE email IN
+        <foreach collection="emails" item="email" open="(" separator="," close=")">
+            #{email}
+        </foreach>
+    </update>
+
+    <select id="findUsersByDepartment" resultMap="SsoUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sso_user
+        WHERE department = #{department}
+        AND is_active = true
+        ORDER BY last_name, first_name
+    </select>
+
+    <select id="getDepartmentStats" resultType="map">
+        SELECT
+        department,
+        COUNT(*) as user_count,
+        SUM(CASE WHEN last_login_time &gt;= DATEADD('DAY', -7, CURRENT_TIMESTAMP)
+        THEN 1 ELSE 0 END) as active_users_last_week,
+        AVG(
+        CASE
+        WHEN last_login_time IS NOT NULL
+        THEN TIMESTAMPDIFF(DAY, last_login_time, CURRENT_TIMESTAMP)
+        ELSE 90
+        END
+        ) as avg_days_since_last_login
+        FROM sso_user
+        WHERE is_active = true
+        AND department IS NOT NULL
+        GROUP BY department
+        ORDER BY user_count DESC
+    </select>
+
+</mapper>

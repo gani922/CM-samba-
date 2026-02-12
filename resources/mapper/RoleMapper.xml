@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.role_management.dao.RoleDAO">
+
+    <resultMap id="roleResultMap" type="com.pramaindia.role_management.model.RoleDO">
+        <id property="id" column="ID" />
+        <result property="buId" column="BU_ID" />
+        <result property="roleName" column="ROLE_NAME" />
+        <result property="deleteStatus" column="DELETE_STATUS" />
+        <result property="isDefault" column="IS_DEFAULT" />
+        <result property="createdBy" column="CREATED_BY" />
+        <result property="creationTime" column="CREATION_TIME" />
+        <result property="modifiedBy" column="MODIFIED_BY" />
+        <result property="modificationTime" column="MODIFICATION_TIME" />
+        <result property="type" column="TYPE" />
+        <result property="pagePermission" column="PAGE_PERMISSION" />
+        <result property="subBuId" column="SUB_BU_ID" />
+        <result property="countryId" column="COUNTRY_ID" />
+        <result property="description" column="DESCRIPTION" />
+    </resultMap>
+
+    <select id="selectByQuery" parameterType="com.pramaindia.role_management.query.RoleQuery" resultMap="roleResultMap">
+        SELECT r.*, c.COUNTRY_NAME
+        FROM ROLE r
+        LEFT JOIN COUNTRY c ON r.COUNTRY_ID = c.ID
+        WHERE r.DELETE_STATUS = '0'
+        <if test="roleName != null and roleName != ''">
+            AND (r.ROLE_NAME LIKE CONCAT('%', #{roleName}, '%')
+            OR r.DESCRIPTION LIKE CONCAT('%', #{roleName}, '%'))
+        </if>
+        <if test="countryName != null and countryName != ''">
+            AND c.COUNTRY_NAME LIKE CONCAT('%', #{countryName}, '%')
+        </if>
+        <if test="roleType != null">
+            AND r.TYPE = #{roleType}
+        </if>
+        <if test="countryId != null">
+            AND r.COUNTRY_ID = #{countryId}
+        </if>
+        <if test="buId != null">
+            AND r.BU_ID = #{buId}
+        </if>
+        <if test="subBuId != null">
+            AND r.SUB_BU_ID = #{subBuId}
+        </if>
+        <if test="isAnonymousUser != null and isAnonymousUser == '1' and userId == null">
+            <!-- Special case for anonymous users -->
+            AND r.TYPE = 99
+        </if>
+        ORDER BY
+        CASE
+        WHEN r.IS_DEFAULT = '1' THEN 0
+        ELSE 1
+        END,
+        r.TYPE,
+        r.CREATION_TIME DESC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countByQuery" parameterType="com.pramaindia.role_management.query.RoleQuery" resultType="Long">
+        SELECT COUNT(*)
+        FROM ROLE r
+        LEFT JOIN COUNTRY c ON r.COUNTRY_ID = c.ID
+        WHERE r.DELETE_STATUS = '0'
+        <if test="roleName != null and roleName != ''">
+            AND (r.ROLE_NAME LIKE CONCAT('%', #{roleName}, '%')
+            OR r.DESCRIPTION LIKE CONCAT('%', #{roleName}, '%'))
+        </if>
+        <if test="countryName != null and countryName != ''">
+            AND c.COUNTRY_NAME LIKE CONCAT('%', #{countryName}, '%')
+        </if>
+        <if test="roleType != null">
+            AND r.TYPE = #{roleType}
+        </if>
+        <if test="countryId != null">
+            AND r.COUNTRY_ID = #{countryId}
+        </if>
+    </select>
+
+    <select id="selectById" parameterType="Long" resultMap="roleResultMap">
+        SELECT * FROM ROLE WHERE ID = #{id} AND DELETE_STATUS = '0'
+    </select>
+
+    <insert id="insert" parameterType="com.pramaindia.role_management.model.RoleDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ROLE (
+        BU_ID, ROLE_NAME, DELETE_STATUS, IS_DEFAULT, CREATED_BY, CREATION_TIME,
+        TYPE, PAGE_PERMISSION, SUB_BU_ID, COUNTRY_ID, DESCRIPTION
+        ) VALUES (
+        #{buId}, #{roleName}, '0', #{isDefault}, #{createdBy}, CURRENT_TIMESTAMP,
+        #{type}, #{pagePermission}, #{subBuId}, #{countryId}, #{description}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.pramaindia.role_management.model.RoleDO">
+        UPDATE ROLE SET
+        ROLE_NAME = #{roleName},
+        TYPE = #{type},
+        PAGE_PERMISSION = #{pagePermission},
+        DESCRIPTION = #{description},
+        MODIFIED_BY = #{modifiedBy},
+        MODIFICATION_TIME = CURRENT_TIMESTAMP
+        WHERE ID = #{id} AND DELETE_STATUS = '0'
+    </update>
+
+    <update id="deleteLogical" parameterType="Long">
+        UPDATE ROLE SET DELETE_STATUS = '1' WHERE ID = #{id} AND IS_DEFAULT = '0'
+    </update>
+
+    <select id="selectByCountryIds" parameterType="list" resultMap="roleResultMap">
+        SELECT * FROM ROLE
+        WHERE COUNTRY_ID IN
+        <foreach collection="countryIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND DELETE_STATUS = '0'
+    </select>
+
+    <select id="selectDefaultRoles" resultMap="roleResultMap">
+        SELECT * FROM ROLE WHERE IS_DEFAULT = '1' AND DELETE_STATUS = '0'
+    </select>
+
+    <select id="selectByRoleTypes" parameterType="map" resultMap="roleResultMap">
+        SELECT * FROM ROLE
+        WHERE TYPE IN
+        <foreach collection="roleTypes" item="type" open="(" separator="," close=")">
+            #{type}
+        </foreach>
+        AND DELETE_STATUS = '0'
+        AND COUNTRY_ID = #{countryId}
+    </select>
+
+    <!-- For pagination calculation -->
+    <sql id="paginationOffset">
+        <bind name="offset" value="(pageNum-1)*pageSize" />
+    </sql>
+
+</mapper>

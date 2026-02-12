@@ -1,0 +1,166 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: customer-management
+    banner:
+      location: classpath:banner.txt 
+      charset: UTF-8
+
+  # H2 Database Configuration
+  datasource:
+    url: jdbc:h2:mem:customermanagementdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;INIT=CREATE SCHEMA IF NOT EXISTS customer_management\;CREATE SCHEMA IF NOT EXISTS login_records\;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+
+  # H2 Console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  # Database Initialization
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql,classpath:schema-login.sql
+#      data-locations: classpath:data-customer.sql,classpath:data-login.sql,classpath:data-rm.sql
+
+  # Thymeleaf Configuration
+  thymeleaf:
+    prefix: classpath:/static/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+
+    # Static Resources Configuration
+    web:
+      resources:
+        static-locations: classpath:/static/
+        cache:
+          period: 0
+
+  servlet:
+    context-path: /
+
+  # Email Configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "reachme318151@gmail.com"
+    password: "pccbpotspjupcedm"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    default-encoding: UTF-8
+
+  # Disable JPA
+  jpa:
+    enabled: false
+  data:
+    jpa:
+      repositories:
+        enabled: false
+
+  # Jackson Configuration
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+5:30
+
+# JWT Configuration
+jwt:
+  secret: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBaQ0k2SWpRd016VTNNREkwTWpFNU1UVXpPVGN4SWl3aWFXRjBJam94TmpFME16WTFORE0wTENKbGJXRnBiQ0k2SW1SdmJXRnVZVzBnWVhKbmFXNWxjM1FpTENKcFlYUWlPakUxTnpZNE56SXhNREFzSW1WNGNDSTZNVFl3T0RBd01qY3hMQ0psZUhBaU9qRTFNelV3TnpVeU5UQXNJbUYwYUNJNk1UVTBNalkwTmpjd01Dd2ljR0Z5ZEdsdmJsTmxiR1ZqZEhNaU9tWmhiSE5sTENKd2NtOTJhV1JsY25NaU9sc2lkR1Z6ZERvZ2V5SmxlSEFpT2pFNE1qQXdPVGd5T1N3aWNHRnlkR2x2Ymw5bGRtVnVkRjlsZUhSbGNtVXVibVYwSWwwc0ltbGhkQ0k2TVRZeU1qWTJOREV3TlN3aVpYaHdJam94TmpJek5UZzJORFF5TENKd2JHOTBJanB1ZFd4c0xDSmxiR0Z6YUNJNmV5SjFjMlZ5WDJsa0lqb2lNVEF5TkRnME16QTFNVE0zSWl3aVpYaHdJam94TmpJek5UZzJORFF5TENKd2JHOTBJanA5
+  expiration: 3600000  # 1 hour
+  refresh-expiration: 86400000  # 24 hours
+  issuer: customer-management
+
+# MyBatis Configuration
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml,classpath:/dao/*.xml
+  type-aliases-package:
+    com.pramaindia.cust_manag.entity,
+    com.pramaindia.cust_manag.model,
+    com.pramaindia.login.model.entity,
+    com.pramaindia.login.model.dto,
+    com.pramaindia.login.model.vo,
+    com.prama_india.customer_management.model
+  configuration:
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 30
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+
+# OpenAPI/Swagger Configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    tagsSorter: alpha
+    operationsSorter: alpha
+    doc-expansion: none
+    display-request-duration: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+
+# Async Configuration
+async:
+  thread-pool:
+    core-size: 5
+    max-size: 10
+    queue-capacity: 25
+
+# Export Configuration
+export:
+  file:
+    base-path: ./exports
+    expiry-hours: 24
+  email:
+    from: "no-reply@pramaindia.com"
+    subject: "Your Login Records Export is Ready"
+
+# Application Settings
+app:
+  base-url: http://localhost:8082
+  from-email: "reachme318151@gmail.com"
+  captcha:
+    enabled: true
+    length: 6
+    expiry-minutes: 5
+  download-path: /api/portal-user/ssoUserLoginRecord/download
+
+# Logging
+logging:
+  level:
+    com.pramaindia: DEBUG
+    com.pramaindia.role_management: DEBUG
+    org.springframework.security: INFO
+    org.springframework.mail: DEBUG
+    org.springframework.web: INFO
+    org.mybatis: DEBUG
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always

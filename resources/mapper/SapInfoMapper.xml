@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.cust_manag.dao.SapInfoMapper">
+
+    <resultMap id="SapInfoResultMap" type="com.pramaindia.cust_manag.entity.SapInfo">
+        <id property="userId" column="user_id" />
+        <result property="userSapId" column="user_sap_id" />
+        <result property="isLock" column="is_lock" />
+        <result property="userName" column="user_name" />
+        <result property="userNameCipher" column="user_name_cipher" />
+        <result property="startValidDate" column="start_valid_date" />
+        <result property="endValidDate" column="end_valid_date" />
+        <result property="userEmail" column="user_email" />
+        <result property="userEmailCipher" column="user_email_cipher" />
+        <result property="userTelphone" column="user_telphone" />
+        <result property="userTelphoneCipher" column="user_telphone_cipher" />
+        <result property="userMobile" column="user_mobile" />
+        <result property="userMobileCipher" column="user_mobile_cipher" />
+        <result property="userMobileCountryCode" column="user_mobile_country_code" />
+        <result property="userMobileCountryCodeCipher" column="user_mobile_country_code_cipher" />
+        <result property="userSaleSapId" column="user_sale_sap_id" />
+        <result property="currencyCode" column="currency_code" />
+        <result property="languageCode" column="language_code" />
+        <result property="userSaleOrg" column="user_sale_org" />
+        <result property="userSaleDept" column="user_sale_dept" />
+        <result property="userSaleGroup" column="user_sale_group" />
+        <result property="userCountryCode" column="user_country_code" />
+        <result property="userPassword" column="user_password" />
+        <result property="userSalt" column="user_salt" />
+        <result property="createdBy" column="created_by" />
+        <result property="creationTime" column="creation_time" />
+        <result property="modifiedBy" column="modified_by" />
+        <result property="modificationTime" column="modification_time" />
+        <result property="deleteStatus" column="delete_status" />
+        <result property="passwordModificationTime" column="password_modification_time" />
+        <result property="authLaw" column="auth_law" />
+        <result property="userParentId" column="user_parent_id" />
+        <result property="userLevel" column="user_level" />
+        <result property="shortMessage" column="short_message" />
+        <result property="sapUserGroup" column="sap_user_group" />
+        <result property="isResetPassword" column="is_reset_password" />
+        <result property="resetPasswordTime" column="reset_password_time" />
+        <result property="userGrade" column="user_grade" />
+        <result property="userArea" column="user_area" />
+        <result property="userPhoto" column="user_photo" />
+        <result property="region" column="region" />
+        <result property="regionId" column="region_id" />
+        <result property="panNumber" column="pan_number" />
+        <result property="gstNumber" column="gst_number" />
+        <result property="saleEmail" column="sale_email" />
+        <result property="saleEmailCipher" column="sale_email_cipher" />
+        <result property="sapPriceGroup" column="sap_price_group" />
+        <result property="branch" column="branch" />
+        <result property="userAddressLock" column="user_address_lock" />
+        <result property="district" column="district" />
+        <result property="paymentTerm" column="payment_term" />
+        <result property="districtId" column="district_id" />
+        <result property="paymentTermId" column="payment_term_id" />
+        <result property="userSaleName" column="user_sale_name" />
+        <result property="branchManagerSapId" column="branch_manager_sap_id" />
+        <result property="branchManagerName" column="branch_manager_name" />
+        <result property="reginalManagerSapId" column="reginal_manager_sap_id" />
+        <result property="reginalManagerName" column="reginal_manager_name" />
+        <result property="userStockShow" column="user_stock_show" />
+        <result property="downloadStockListShow" column="download_stock_list_show" />
+        <result property="addCoupons" column="add_coupons" />
+        <result property="showCouponsWindows" column="show_coupons_windows" />
+        <result property="saleChannel" column="sale_channel" />
+        <result property="addFlashSales" column="add_flash_sales" />
+        <result property="userConfig" column="user_config" />
+        <result property="resetDevicePassword" column="reset_device_password" />
+        <result property="userSapId1" column="user_sap_id1" />
+        <result property="saleOrganizeId" column="sale_organize_id" />
+        <result property="salesName" column="sales_name" />
+        <result property="countryName" column="country_name" />
+        <result property="userGroupName" column="user_group_name" />
+        <result property="reason" column="reason" />
+        <result property="dt_RowId" column="dt_row_id" />
+        <result property="financeEmail" column="finance_email" />
+        <result property="purchaseEmail" column="purchase_email" />
+        <result property="userSapIds" column="user_sap_ids" />
+        <result property="b2bUser" column="b2b_user" />
+        <result property="specialSupportTimeStart" column="special_support_time_start" />
+        <result property="specialSupportTimeEnd" column="special_support_time_end" />
+        <result property="groupIds" column="group_ids" />
+        <result property="customerName" column="customer_name" />
+        <result property="lastLoginTime" column="last_login_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id, user_sap_id, is_lock, user_name, user_name_cipher,
+        start_valid_date, end_valid_date, user_email, user_email_cipher,
+        user_telphone, user_telphone_cipher, user_mobile, user_mobile_cipher,
+        user_mobile_country_code, user_mobile_country_code_cipher,
+        user_sale_sap_id, currency_code, language_code, user_sale_org,
+        user_sale_dept, user_sale_group, user_country_code, user_password,
+        user_salt, created_by, creation_time, modified_by, modification_time,
+        delete_status, password_modification_time, auth_law, user_parent_id,
+        user_level, short_message, sap_user_group, is_reset_password,
+        reset_password_time, user_grade, user_area, user_photo, region,
+        region_id, pan_number, gst_number, sale_email, sale_email_cipher,
+        sap_price_group, branch, user_address_lock, district, payment_term,
+        district_id, payment_term_id, user_sale_name, branch_manager_sap_id,
+        branch_manager_name, reginal_manager_sap_id, reginal_manager_name,
+        user_stock_show, download_stock_list_show, add_coupons,
+        show_coupons_windows, sale_channel, add_flash_sales, user_config,
+        reset_device_password, user_sap_id1, sale_organize_id, sales_name,
+        country_name, user_group_name, reason, dt_row_id, finance_email,
+        purchase_email, user_sap_ids, b2b_user, special_support_time_start,
+        special_support_time_end, group_ids, customer_name, last_login_time
+    </sql>
+
+    <select id="findAll" resultMap="SapInfoResultMap" parameterType="map">
+        SELECT <include refid="Base_Column_List" />
+        FROM sap_info
+        WHERE delete_status = '0'
+        <if test="params.userSapId != null and params.userSapId != ''">
+            AND user_sap_id LIKE CONCAT('%', #{params.userSapId}, '%')
+        </if>
+        <if test="params.userName != null and params.userName != ''">
+            AND user_name LIKE CONCAT('%', #{params.userName}, '%')
+        </if>
+        <if test="params.userEmail != null and params.userEmail != ''">
+            AND user_email LIKE CONCAT('%', #{params.userEmail}, '%')
+        </if>
+        <if test="params.userMobile != null and params.userMobile != ''">
+            AND user_mobile LIKE CONCAT('%', #{params.userMobile}, '%')
+        </if>
+        <if test="params.isLock != null and params.isLock != ''">
+            AND is_lock = #{params.isLock}
+        </if>
+        <if test="params.sapUserGroup != null and params.sapUserGroup != ''">
+            AND sap_user_group = #{params.sapUserGroup}
+        </if>
+        <if test="params.regionId != null and params.regionId != ''">
+            AND region_id = #{params.regionId}
+        </if>
+        <if test="params.districtId != null and params.districtId != ''">
+            AND district_id = #{params.districtId}
+        </if>
+        <if test="params.searchKeyword != null and params.searchKeyword != ''">
+            AND (user_sap_id LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR user_name LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR user_email LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR user_mobile LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR customer_name LIKE CONCAT('%', #{params.searchKeyword}, '%'))
+        </if>
+        <if test="params.startValidDate != null">
+            AND start_valid_date >= #{params.startValidDate}
+        </if>
+        <if test="params.endValidDate != null">
+            AND end_valid_date &lt;= #{params.endValidDate}
+        </if>
+        ORDER BY ${params.orderBy}
+        LIMIT #{params.pageSize} OFFSET #{params.offset}
+    </select>
+
+    <select id="countByCondition" resultType="Long" parameterType="map">
+        SELECT COUNT(*)
+        FROM sap_info
+        WHERE delete_status = '0'
+        <if test="params.userSapId != null and params.userSapId != ''">
+            AND user_sap_id LIKE CONCAT('%', #{params.userSapId}, '%')
+        </if>
+        <if test="params.userName != null and params.userName != ''">
+            AND user_name LIKE CONCAT('%', #{params.userName}, '%')
+        </if>
+        <if test="params.userEmail != null and params.userEmail != ''">
+            AND user_email LIKE CONCAT('%', #{params.userEmail}, '%')
+        </if>
+        <if test="params.userMobile != null and params.userMobile != ''">
+            AND user_mobile LIKE CONCAT('%', #{params.userMobile}, '%')
+        </if>
+        <if test="params.isLock != null and params.isLock != ''">
+            AND is_lock = #{params.isLock}
+        </if>
+        <if test="params.sapUserGroup != null and params.sapUserGroup != ''">
+            AND sap_user_group = #{params.sapUserGroup}
+        </if>
+        <if test="params.regionId != null and params.regionId != ''">
+            AND region_id = #{params.regionId}
+        </if>
+        <if test="params.districtId != null and params.districtId != ''">
+            AND district_id = #{params.districtId}
+        </if>
+        <if test="params.searchKeyword != null and params.searchKeyword != ''">
+            AND (user_sap_id LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR user_name LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR user_email LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR user_mobile LIKE CONCAT('%', #{params.searchKeyword}, '%')
+            OR customer_name LIKE CONCAT('%', #{params.searchKeyword}, '%'))
+        </if>
+        <if test="params.startValidDate != null">
+            AND start_valid_date >= #{params.startValidDate}
+        </if>
+        <if test="params.endValidDate != null">
+            AND end_valid_date &lt;= #{params.endValidDate}
+        </if>
+    </select>
+
+    <select id="findBySpecialSupportTimeRange" resultMap="SapInfoResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sap_info
+        WHERE delete_status = '0'
+        AND is_lock = 'N'
+        AND special_support_time_start IS NOT NULL
+        AND special_support_time_end IS NOT NULL
+        AND CURRENT_TIMESTAMP BETWEEN special_support_time_start AND special_support_time_end
+    </select>
+
+    <update id="updateLastLoginTime" parameterType="string">
+        UPDATE sap_info
+        SET last_login_time = CURRENT_TIMESTAMP
+        WHERE user_sap_id = #{userSapId}
+        AND delete_status = '0'
+    </update>
+
+</mapper>

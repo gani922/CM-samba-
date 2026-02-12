@@ -1,0 +1,76 @@
+---- Insert initial countries data
+--INSERT INTO COUNTRY (ID, COUNTRY_NAME, BU_ID, SUB_BU_ID) VALUES
+--(444, 'India', 5, 443),
+--(662, 'Bangladesh', 5, 661),
+--(10027, 'Nepal', 5, 10026),
+--(663, 'Sri-lanka', 5, 662);
+--
+---- Insert default roles (matching your screenshots)
+--INSERT INTO ROLE (ROLE_NAME, BU_ID, TYPE, COUNTRY_ID, DESCRIPTION, IS_DEFAULT, CREATED_BY) VALUES
+--('Product Management', 5, 0, 444, 'Product Management Role', '1', 'admin'),
+--('Customer Management', 5, 0, 444, 'Customer Management Role', '1', 'admin'),
+--('Role Management', 5, 0, 444, 'Role Management Role', '1', 'system'),
+--('Order Management', 5, 0, 444, 'Order Management Role', '1', 'system'),
+--('SAP Data Synchronization', 5, 0, 444, 'SAP Data Synchronization Role', '1', 'system'),
+--('Promotion Management', 5, 0, 444, 'Promotion Management Role', '1', 'system'),
+--('General Management', 5, 0, 444, 'General Management Role', '1', 'system'),
+--('Report', 5, 0, 444, 'Report Role', '1', 'system'),
+--('System Administration', 5, 0, 444, 'System Administration Role', '1', 'system'),
+--('Marketing Management', 5, 0, 444, 'Marketing Management Role', '1', 'system'),
+--('Dashboard', 5, 0, 444, 'Dashboard Role', '1', 'system'),
+--('Scheme Disbursement', 5, 0, 444, 'Scheme Disbursement Role', '1', 'system'),
+--('Scheme Management', 5, 0, 444, 'Scheme Management Role', '1', 'system'),
+--('Marketing Resources', 5, 0, 444, 'Marketing Resources Role', '1', 'system'),
+--('测试_角色', 5, 4, 444, 'DPP Company User', '0', 'system'),
+--('India_Distributor_B2B_Admin', 5, 9, 444, 'B2B Admin', '0', 'system'),
+--('India_Distributor_Company_Admin', 5, 1, 444, 'Distributor Company Admin', '0', 'system'),
+--('sell-outer', 5, 0, 444, 'User Defined', '0', 'system'),
+--('WY1128', 5, 15, 444, 'OEM Company User', '0', 'system'),
+--('测试', 5, 0, 444, 'User Defined', '0', 'system'),
+--('测试33', 5, 0, 444, 'User Defined', '0', 'system'),
+--('测试44', 5, 0, 444, 'de', '0', 'system'),
+--('PIPL_ADMIN_2', 5, 0, 444, 'dev!!', '0', 'system'),
+--('PIPL_ADMIN_1', 5, 0, 444, 'testing!!', '0', 'system');
+--
+---- Insert default resources/menu items
+--INSERT INTO RESOURCE (NAME, TYPE, AUTHORITY_ATTR, URL, PARENT_ID, CODE, SORT, IS_DEFAULT, CREATED_BY) VALUES
+--('Product Management', 'M', 'PRODUCT_MGMT', '/products', 0, 'PRODUCT_MGMT', 1, '1', 'system'),
+--('Customer Management', 'M', 'CUSTOMER_MGMT', '/customers', 0, 'CUSTOMER_MGMT', 2, '1', 'system'),
+--('Role Management', 'M', 'ROLE_MGMT', '/roles', 0, 'ROLE_MGMT', 3, '1', 'system'),
+--('Customer Login Record', 'M', 'CUSTOMER_LOGIN', '/customers/login-record', 2, 'CUSTOMER_LOGIN', 1, '1', 'system'),
+--('Customer Management', 'M', 'CUSTOMER_MGMT_SUB', '/customers/manage', 2, 'CUSTOMER_MGMT_SUB', 2, '1', 'system'),
+--('Delete Account', 'M', 'DELETE_ACCOUNT', '/customers/delete', 2, 'DELETE_ACCOUNT', 3, '1', 'system'),
+--('Order Management', 'M', 'ORDER_MGMT', '/orders', 0, 'ORDER_MGMT', 4, '1', 'system'),
+--('SAP Data Synchronization', 'M', 'SAP_SYNC', '/sap', 0, 'SAP_SYNC', 5, '1', 'system'),
+--('Promotion Management', 'M', 'PROMOTION_MGMT', '/promotions', 0, 'PROMOTION_MGMT', 6, '1', 'system'),
+--('General Management', 'M', 'GENERAL_MGMT', '/general', 0, 'GENERAL_MGMT', 7, '1', 'system'),
+--('Report', 'M', 'REPORT', '/reports', 0, 'REPORT', 8, '1', 'system'),
+--('System Administration', 'M', 'SYS_ADMIN', '/admin', 0, 'SYS_ADMIN', 9, '1', 'system'),
+--('Marketing Management', 'M', 'MARKETING_MGMT', '/marketing', 0, 'MARKETING_MGMT', 10, '1', 'system'),
+--('Dashboard', 'M', 'DASHBOARD', '/dashboard', 0, 'DASHBOARD', 11, '1', 'system'),
+--('Scheme Disbursement', 'M', 'SCHEME_DISB', '/schemes/disbursement', 0, 'SCHEME_DISB', 12, '1', 'system'),
+--('Scheme Management', 'M', 'SCHEME_MGMT', '/schemes', 0, 'SCHEME_MGMT', 13, '1', 'system'),
+--('Marketing Resources', 'M', 'MARKETING_RES', '/marketing/resources', 0, 'MARKETING_RES', 14, '1', 'system'),
+--('My Order', 'M', 'MY_ORDER', '/orders/my', 7, 'MY_ORDER', 1, '1', 'system'),
+--('Warranty Order', 'M', 'WARRANTY_ORDER', '/orders/warranty', 7, 'WARRANTY_ORDER', 2, '1', 'system'),
+--('Home', 'M', 'PROMO_HOME', '/promotions/home', 9, 'PROMO_HOME', 1, '1', 'system'),
+--('Promotions', 'M', 'PROMOTIONS', '/promotions/list', 9, 'PROMOTIONS', 2, '1', 'system'),
+--('Support', 'M', 'SUPPORT', '/support', 0, 'SUPPORT', 15, '1', 'system'),
+--('How To Video', 'M', 'HOW_TO_VIDEO', '/support/videos', 22, 'HOW_TO_VIDEO', 1, '1', 'system'),
+--('How To Document', 'M', 'HOW_TO_DOC', '/support/documents', 22, 'HOW_TO_DOC', 2, '1', 'system'),
+--('Contact Us', 'M', 'CONTACT_US', '/support/contact', 22, 'CONTACT_US', 3, '1', 'system'),
+--('Download Center', 'M', 'DOWNLOAD_CENTER', '/support/downloads', 22, 'DOWNLOAD_CENTER', 4, '1', 'system'),
+--('Help Center', 'M', 'HELP_CENTER', '/support/help', 22, 'HELP_CENTER', 5, '1', 'system');
+--
+---- Insert role-resource mappings for default roles
+--INSERT INTO ROLE_RESOURCE (ROLE_ID, RESOURCE_ID)
+--SELECT r.ID, res.ID
+--FROM ROLE r, RESOURCE res
+--WHERE r.IS_DEFAULT = '1' AND res.IS_DEFAULT = '1';
+--
+---- Insert some sample user-role mappings
+--INSERT INTO PORTAL_USER_ROLE (USER_ID, ROLE_ID) VALUES
+--(1, 1), -- User 1 has Product Management role
+--(1, 2), -- User 1 has Customer Management role
+--(2, 3), -- User 2 has Role Management role
+--(3, 4); -- User 3 has Order Management role

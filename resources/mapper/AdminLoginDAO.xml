@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pramaindia.customer_management.dao.AdminLoginDAO">
+
+    <!-- Result Map -->
+    <resultMap id="AdminLoginInfoResultMap" type="com.pramaindia.customer_management.model.AdminLoginInfo">
+        <id property="adminId" column="admin_id"/>
+        <result property="username" column="username"/>
+        <result property="passwordHash" column="password_hash"/>
+        <result property="email" column="email"/>
+        <result property="fullName" column="full_name"/>
+        <result property="role" column="role"/>
+        <result property="isActive" column="is_active"/>
+        <result property="lastLogin" column="last_login"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="department" column="department"/>
+        <result property="resetToken" column="reset_token"/>
+        <result property="tokenExpiry" column="token_expiry"/>
+    </resultMap>
+
+    <!-- Query Statements -->
+    <select id="findByUsername" resultMap="AdminLoginInfoResultMap">
+        SELECT * FROM admin_login_info
+        WHERE username = #{username} AND is_active = true
+    </select>
+
+    <select id="findById" resultMap="AdminLoginInfoResultMap">
+        SELECT * FROM admin_login_info WHERE admin_id = #{adminId}
+    </select>
+
+    <select id="findByEmailAndPhone" resultMap="AdminLoginInfoResultMap">
+        SELECT * FROM admin_login_info
+        WHERE email = #{email} AND phone_number = #{phoneNumber}
+    </select>
+
+    <select id="findByResetToken" resultMap="AdminLoginInfoResultMap">
+        SELECT * FROM admin_login_info WHERE reset_token = #{resetToken}
+    </select>
+
+    <select id="selectAll" resultMap="AdminLoginInfoResultMap">
+        SELECT * FROM admin_login_info
+    </select>
+
+    <select id="findByRole" resultMap="AdminLoginInfoResultMap">
+        SELECT * FROM admin_login_info
+        WHERE role = #{role} AND is_active = true
+    </select>
+
+    <!-- Update Statements -->
+    <update id="updateLastLogin">
+        UPDATE admin_login_info
+        SET last_login = #{lastLogin}
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE admin_login_info
+        SET password_hash = #{newHash}
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <update id="updateResetToken">
+        UPDATE admin_login_info
+        SET reset_token = #{resetToken},
+        token_expiry = #{tokenExpiry}
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <update id="updateProfile" parameterType="com.pramaindia.customer_management.model.AdminLoginInfo">
+        UPDATE admin_login_info
+        SET email = #{email},
+        full_name = #{fullName},
+        phone_number = #{phoneNumber},
+        department = #{department},
+        is_active = #{isActive}
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <update id="deactivateUser">
+        UPDATE admin_login_info
+        SET is_active = false
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <!-- Insert Statements -->
+    <insert id="insert" parameterType="com.pramaindia.customer_management.model.AdminLoginInfo">
+        INSERT INTO admin_login_info
+        (admin_id, username, password_hash, email, full_name, role,
+        phone_number, department, is_active, reset_token, token_expiry)
+        VALUES
+        (#{adminId}, #{username}, #{passwordHash}, #{email}, #{fullName},
+        #{role}, #{phoneNumber}, #{department}, #{isActive},
+        #{resetToken}, #{tokenExpiry})
+    </insert>
+
+    <!-- JWT Blacklist Related -->
+    <insert id="blacklistToken">
+        INSERT INTO jwt_blacklist (token, blacklisted_at)
+        VALUES (#{token}, #{time})
+    </insert>
+
+    <select id="isTokenBlacklisted" resultType="int">
+        SELECT COUNT(*) FROM jwt_blacklist WHERE token = #{token}
+    </select>
+
+    <!-- Statistics Statements -->
+    <select id="countActiveUsers" resultType="int">
+        SELECT COUNT(*) FROM admin_login_info WHERE is_active = true
+    </select>
+
+</mapper>

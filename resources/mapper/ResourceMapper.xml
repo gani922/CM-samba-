@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.role_management.dao.ResourceDAO">
+
+    <resultMap id="resourceResultMap" type="com.pramaindia.role_management.model.ResourceDO">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="type" column="TYPE" />
+        <result property="authorityAttr" column="AUTHORITY_ATTR" />
+        <result property="url" column="URL" />
+        <result property="parentId" column="PARENT_ID" />
+        <result property="createdBy" column="CREATED_BY" />
+        <result property="creationTime" column="CREATION_TIME" />
+        <result property="modifiedBy" column="MODIFIED_BY" />
+        <result property="modificationTime" column="MODIFICATION_TIME" />
+        <result property="deleteStatus" column="DELETE_STATUS" />
+        <result property="isDefault" column="IS_DEFAULT" />
+        <result property="code" column="CODE" />
+        <result property="sort" column="SORT" />
+    </resultMap>
+
+    <select id="selectAll" resultMap="resourceResultMap">
+        SELECT * FROM RESOURCE WHERE DELETE_STATUS = '0' ORDER BY SORT, ID
+    </select>
+
+    <select id="selectByRoleId" parameterType="Long" resultMap="resourceResultMap">
+        SELECT r.* FROM RESOURCE r
+        INNER JOIN ROLE_RESOURCE rr ON r.ID = rr.RESOURCE_ID
+        WHERE rr.ROLE_ID = #{roleId} AND r.DELETE_STATUS = '0'
+        ORDER BY r.SORT, r.ID
+    </select>
+
+    <select id="selectByParentId" parameterType="Long" resultMap="resourceResultMap">
+        SELECT * FROM RESOURCE
+        WHERE PARENT_ID = #{parentId} AND DELETE_STATUS = '0'
+        ORDER BY SORT, ID
+    </select>
+
+    <select id="selectById" parameterType="Long" resultMap="resourceResultMap">
+        SELECT * FROM RESOURCE WHERE ID = #{id} AND DELETE_STATUS = '0'
+    </select>
+
+    <select id="selectResourceIdsByRoleId" parameterType="Long" resultType="Long">
+        SELECT RESOURCE_ID FROM ROLE_RESOURCE WHERE ROLE_ID = #{roleId}
+    </select>
+
+    <insert id="insertRoleResources">
+        INSERT INTO ROLE_RESOURCE (ROLE_ID, RESOURCE_ID) VALUES
+        <foreach collection="resourceIds" item="resourceId" separator=",">
+            (#{roleId}, #{resourceId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteRoleResources" parameterType="Long">
+        DELETE FROM ROLE_RESOURCE WHERE ROLE_ID = #{roleId}
+    </delete>
+
+    <select id="selectResourcesWithHierarchy" resultMap="resourceResultMap">
+        SELECT * FROM RESOURCE
+        WHERE DELETE_STATUS = '0'
+        ORDER BY PARENT_ID, SORT, ID
+    </select>
+
+    <!-- Get resources with parent information -->
+    <select id="selectResourcesWithParentInfo" resultMap="resourceResultMap">
+        SELECT r1.*, r2.NAME as PARENT_NAME
+        FROM RESOURCE r1
+        LEFT JOIN RESOURCE r2 ON r1.PARENT_ID = r2.ID
+        WHERE r1.DELETE_STATUS = '0'
+        ORDER BY r1.PARENT_ID, r1.SORT, r1.ID
+    </select>
+
+</mapper>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIKVISION | Prama India Admin Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+<div class="login-container">
+    <!-- Left Side - Branding -->
+    <div class="brand-side">
+        <div class="brand-content">
+            <div class="logo-container">
+                <img src="images/hikvision-logo.png" alt="HIKVISION Logo" class="brand-logo">
+                <div class="brand-text">
+                    <h1 class="brand-title">HIKVISION</h1>
+                    <p class="brand-subtitle">Prama India Admin Portal</p>
+                </div>
+            </div>
+
+            <div class="brand-message">
+                <h2>Secure Admin Portal</h2>
+                <p>Enterprise-grade security and management tools for HIKVISION administrators</p>
+            </div>
+
+            <div class="features-list">
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Enterprise Security</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-network"></i>
+                    <span>Multi-level Access Control</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Real-time Data Sync</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-analytics"></i>
+                    <span>Advanced Analytics</span>
+                </div>
+            </div>
+
+            <div class="security-badge">
+                <i class="fas fa-lock"></i>
+                <span>ISO 27001 Certified</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-side">
+        <div class="login-wrapper">
+            <div class="login-header">
+                <h2>Please select BU/SubBU/Country and Sales org</h2>
+            </div>
+
+            <!-- Organization Selection -->
+            <div class="org-selection">
+                <div class="org-controls">
+                    <button class="org-btn" id="expandAll">
+                        <i class="fas fa-expand-alt"></i> Expand All
+                    </button>
+                    <button class="org-btn" id="collapseAll">
+                        <i class="fas fa-compress-alt"></i> Collapse All
+                    </button>
+                </div>
+
+                <div class="org-tree">
+                    <div class="org-country">
+                        <div class="country-header">
+                            <i class="fas fa-chevron-right country-toggle"></i>
+                            <i class="fas fa-flag"></i>
+                            <span>India</span>
+                            <span class="country-code">[IN]</span>
+                        </div>
+                        <div class="org-children">
+                            <!-- Sales organizations will be loaded dynamically -->
+                            <div class="loading-orgs">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                Loading organizations...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="login-form-section">
+                <div class="form-header">
+                    <h3>Login</h3>
+                    <p>Enter your credentials to access the admin portal</p>
+                </div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username"
+                                required
+                                autocomplete="username"
+                        >
+                        <div class="error-message" id="usernameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <div class="password-wrapper">
+                            <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Enter your password"
+                                    required
+                                    autocomplete="current-password"
+                            >
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+
+                    <div class="captcha-section" id="captchaSection" style="display: none;">
+                        <div class="captcha-header">
+                            <span>Security Verification</span>
+                            <button type="button" class="captcha-refresh" id="refreshCaptcha">
+                                <i class="fas fa-redo"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="captcha-display" id="captchaDisplay"></div>
+                        <input
+                                type="text"
+                                id="captcha"
+                                name="captcha"
+                                placeholder="Enter the code above"
+                                class="captcha-input"
+                        >
+                        <div class="error-message" id="captchaError"></div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" id="forgotPasswordLink" class="forgot-password">
+                            <i class="fas fa-key"></i> Forgot Password?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="login-button" id="loginButton">
+                        <span id="loginText">Sign In</span>
+                        <div class="spinner" id="loginSpinner"></div>
+                    </button>
+
+                    <div class="form-footer">
+                        <div class="version-info">
+                            <i class="fas fa-code-branch"></i>
+                            <span>Version 2.5.1 | HIKVISION Admin Portal</span>
+                        </div>
+                        <div class="support-info">
+                            <i class="fas fa-headset"></i>
+                            <span>Support: support@pramaindia.com</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="login-footer">
+            <div class="copyright">
+                <p>&copy; 2024 HIKVISION Prama India. All rights reserved.</p>
+                <p class="legal-links">
+                    <a href="#">Privacy Policy</a> |
+                    <a href="#">Terms of Service</a> |
+                    <a href="#">Security Policy</a>
+                </p>
+            </div>
+            <div class="security-info">
+                <i class="fas fa-shield-check"></i>
+                <span>Protected by JWT & AES-256 Encryption</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div class="modal" id="forgotPasswordModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Reset Password</h3>
+            <button class="modal-close" id="closeForgotModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="forgotEmail">
+                        <i class="fas fa-envelope"></i> Email Address
+                    </label>
+                    <input
+                            type="email"
+                            id="forgotEmail"
+                            name="email"
+                            placeholder="Enter your registered email"
+                            required
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="forgotPhone">
+                        <i class="fas fa-phone"></i> Phone Number
+                    </label>
+                    <input
+                            type="tel"
+                            id="forgotPhone"
+                            name="phoneNumber"
+                            placeholder="Enter your phone number"
+                            required
+                    >
+                </div>
+                <button type="submit" class="submit-button" id="forgotPasswordButton">
+                    Send Reset Link
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<!-- JavaScript Files -->
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize organization tree
+        initOrgTree();
+
+        // Load organizations from API
+        loadOrganizations();
+    });
+
+    function initOrgTree() {
+        const expandBtn = document.getElementById('expandAll');
+        const collapseBtn = document.getElementById('collapseAll');
+        const countryToggle = document.querySelector('.country-toggle');
+
+        if (expandBtn) {
+            expandBtn.addEventListener('click', function() {
+                document.querySelectorAll('.org-children').forEach(el => {
+                    el.style.display = 'block';
+                });
+                document.querySelectorAll('.country-toggle').forEach(toggle => {
+                    toggle.className = 'fas fa-chevron-down country-toggle';
+                });
+            });
+        }
+
+        if (collapseBtn) {
+            collapseBtn.addEventListener('click', function() {
+                document.querySelectorAll('.org-children').forEach(el => {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.country-toggle').forEach(toggle => {
+                    toggle.className = 'fas fa-chevron-right country-toggle';
+                });
+            });
+        }
+
+        if (countryToggle) {
+            countryToggle.addEventListener('click', function() {
+                const children = this.closest('.country-header').nextElementSibling;
+                if (children.style.display === 'none') {
+                    children.style.display = 'block';
+                    this.className = 'fas fa-chevron-down country-toggle';
+                } else {
+                    children.style.display = 'none';
+                    this.className = 'fas fa-chevron-right country-toggle';
+                }
+            });
+        }
+    }
+
+    async function loadOrganizations() {
+        try {
+            // Try to get organizations from API
+            // For now, use mock data
+            const mockOrgs = [
+                { id: 1, name: 'Sales Organization 1', code: 'SORG-001' },
+                { id: 2, name: 'Sales Organization 2', code: 'SORG-002' },
+                { id: 3, name: 'Sales Organization 3', code: 'SORG-003' }
+            ];
+
+            const orgsContainer = document.querySelector('.org-children');
+            if (orgsContainer) {
+                orgsContainer.innerHTML = '';
+
+                mockOrgs.forEach(org => {
+                    const orgItem = document.createElement('div');
+                    orgItem.className = 'org-item';
+                    orgItem.innerHTML = `
+                        <label class="org-checkbox">
+                            <input type="radio" name="salesOrg" value="${org.id}">
+                            <span class="checkmark"></span>
+                            <div class="org-info">
+                                <span class="org-name">${org.name}</span>
+                                <span class="org-code">${org.code}</span>
+                            </div>
+                        </label>
+                    `;
+                    orgsContainer.appendChild(orgItem);
+                });
+
+                // Add event listeners to radio buttons
+                document.querySelectorAll('input[name="salesOrg"]').forEach(radio => {
+                    radio.addEventListener('change', function() {
+                        document.querySelectorAll('.org-item').forEach(item => {
+                            item.classList.remove('selected');
+                        });
+                        if (this.checked) {
+                            this.closest('.org-item').classList.add('selected');
+                        }
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('Failed to load organizations:', error);
+        }
+    }
+</script>
+</body>
+</html>

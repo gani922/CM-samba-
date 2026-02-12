@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | HIKVISION Admin Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <img src="images/hikvision-logo.png" alt="HIKVISION Logo">
+                <h1>HIKVISION</h1>
+            </div>
+            <div class="welcome-section">
+                <div class="user-avatar" id="userAvatar">
+                    <span>A</span>
+                </div>
+                <div class="welcome-text">
+                    <h3 id="userName">Welcome, Admin!</h3>
+                    <p id="userRole">Administrator</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4>Main Menu</h4>
+                <div class="menu-items">
+                    <a href="#" class="menu-item active" data-section="home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="rd">
+                        <i class="fas fa-flask"></i>
+                        <span>RD</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="srd">
+                        <i class="fas fa-microscope"></i>
+                        <span>SRD</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <h4>Management</h4>
+                <div class="menu-items">
+                    <a href="#" class="menu-item" data-section="product">
+                        <i class="fas fa-box"></i>
+                        <span>Product Management</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="customer">
+                        <i class="fas fa-users"></i>
+                        <span>Customer Management</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="order">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Order Management</span>
+                        <span class="menu-badge">12</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="sap">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>SAP Data Synchronization</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <h4>Operations</h4>
+                <div class="menu-items">
+                    <a href="#" class="menu-item" data-section="promotion">
+                        <i class="fas fa-percentage"></i>
+                        <span>Promotion Management</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="general">
+                        <i class="fas fa-cogs"></i>
+                        <span>General Management</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="system">
+                        <i class="fas fa-server"></i>
+                        <span>System Administration</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <h4>Marketing</h4>
+                <div class="menu-items">
+                    <a href="#" class="menu-item" data-section="marketing">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Marketing Management</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="scheme">
+                        <i class="fas fa-gift"></i>
+                        <span>Scheme Management</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="disbursement">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <span>Scheme Disbursement</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="resources">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Marketing Resources</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-divider"></div>
+
+            <div class="menu-items">
+                <a href="#" class="menu-item" data-section="profile">
+                    <i class="fas fa-user-cog"></i>
+                    <span>My Profile</span>
+                </a>
+                <a href="change-password.html" class="menu-item">
+                    <i class="fas fa-key"></i>
+                    <span>Change Password</span>
+                </a>
+                <a href="#" class="menu-item" data-section="settings">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="menu-item" data-section="help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help & Support</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <div class="status-indicator"></div>
+                <span>System Online</span>
+            </div>
+            <button class="logout-btn" id="logoutButton">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="page-title">
+                <h2 id="pageTitle">Home</h2>
+                <p id="pageSubtitle">Welcome to HIKVISION Admin Portal</p>
+            </div>
+
+            <div class="top-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search customers, orders, products...">
+                </div>
+
+                <button class="notification-btn" id="notificationButton">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+
+                <div class="user-menu" id="userMenu">
+                    <div class="user-trigger">
+                        <div class="user-avatar-small" id="userAvatarSmall">
+                            <span>A</span>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" id="topUserName">Admin User</span>
+                            <span class="user-role" id="topUserRole">Administrator</span>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" class="dropdown-item" data-section="profile">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
+                        </a>
+                        <a href="change-password.html" class="dropdown-item">
+                            <i class="fas fa-key"></i>
+                            <span>Change Password</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" data-section="settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                        <a href="#" class="dropdown-item" data-section="help">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Help & Support</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item logout" id="dropdownLogout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content (Dynamic based on menu selection) -->
+        <div class="dashboard-content" id="dashboardContent">
+            <!-- Home Section (Default) -->
+            <section class="content-section active" id="homeSection">
+                <div class="welcome-card">
+                    <div class="welcome-message">
+                        <h3>Welcome!</h3>
+                        <p>Welcome to HIKVISION Prama India Admin Portal. Manage your operations, track performance, and access all tools from this centralized dashboard. Wish you a pleasant day!</p>
+                    </div>
+                    <div class="welcome-icon">
+                        <i class="fas fa-hand-peace"></i>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Customers</div>
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="totalCustomers">1,245</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12% from last month</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card red">
+                        <div class="stat-header">
+                            <div class="stat-title">Pending Orders</div>
+                            <div class="stat-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="pendingOrders">42</div>
+                        <div class="stat-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>3% from last week</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card green">
+                        <div class="stat-header">
+                            <div class="stat-title">Revenue Today</div>
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="revenueToday">₹ 2,45,680</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8% from yesterday</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card orange">
+                        <div class="stat-header">
+                            <div class="stat-title">Active Products</div>
+                            <div class="stat-icon">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="activeProducts">356</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5 new this month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <div class="section-header">
+                        <h3>Quick Actions</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="actions-grid">
+                        <a href="#" class="action-item" data-section="customer">
+                            <div class="action-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <h4>Add New Customer</h4>
+                            <p>Register new customer account</p>
+                        </a>
+                        <a href="#" class="action-item" data-section="order">
+                            <div class="action-icon">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                            <h4>Create Order</h4>
+                            <p>Generate new sales order</p>
+                        </a>
+                        <a href="#" class="action-item" data-section="product">
+                            <div class="action-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <h4>Add Product</h4>
+                            <p>Add new product to catalog</p>
+                        </a>
+                        <a href="#" class="action-item" data-section="reports">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h4>Generate Report</h4>
+                            <p>Create performance reports</p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <div class="section-header">
+                        <h3>Recent Activity</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">New Customer Registration</div>
+                                <div class="activity-description">John Doe registered as a new customer</div>
+                                <div class="activity-time">10 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Order Completed</div>
+                                <div class="activity-description">Order #ORD-2024-001 has been completed</div>
+                                <div class="activity-time">1 hour ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">SAP Sync Completed</div>
+                                <div class="activity-description">Daily SAP synchronization successful</div>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Monthly Report Generated</div>
+                                <div class="activity-description">Sales report for March 2024 generated</div>
+                                <div class="activity-time">3 hours ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other sections will be loaded dynamically -->
+            <div id="dynamicContent"></div>
+        </div>
+    </main>
+</div>
+
+<!-- Notification Panel -->
+<div class="modal" id="notificationModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Notifications</h3>
+            <button class="modal-close" id="closeNotificationModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="notification-list">
+                <!-- Notifications will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<!-- JavaScript Files -->
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
