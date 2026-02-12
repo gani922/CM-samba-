@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.cust_manag.dao.CompanyAddressDAO">
+
+    <resultMap id="BaseResultMap" type="com.pramaindia.cust_manag.entity.CompanyAddress">
+        <id column="ADDRESS_ID" property="addressId" jdbcType="BIGINT"/>
+        <result column="USER_SAP_ID" property="userSapId" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_COUNTRY_CODE" property="addressCountryCode" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_PROVINCE" property="addressProvince" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_CITY" property="addressCity" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_STREET" property="addressStreet" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_ZIPCODE" property="addressZipcode" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_TYPE" property="addressType" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="SHIPTO_ID" property="shiptoId" jdbcType="VARCHAR"/>
+        <result column="DEFAULT_ADDRESS" property="defaultAddress" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_CONTACT" property="addressContact" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_EMAIL" property="addressEmail" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_TELPHONE" property="addressTelephone" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_NAME" property="addressName" jdbcType="VARCHAR"/>
+        <result column="ADDRESS_PROVINCE_CODE" property="addressProvinceCode" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATION_TIME" property="creationTime" jdbcType="TIMESTAMP"/>
+        <result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+        <result column="MODIFICATION_TIME" property="modificationTime" jdbcType="TIMESTAMP"/>
+        <result column="DELETE_STATUS" property="deleteStatus" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ADDRESS_ID, USER_SAP_ID, ADDRESS_COUNTRY_CODE, ADDRESS_PROVINCE, ADDRESS_CITY,
+        ADDRESS_STREET, ADDRESS_ZIPCODE, ADDRESS_TYPE, SHIPTO_ID, DEFAULT_ADDRESS,
+        ADDRESS, ADDRESS_CONTACT, ADDRESS_EMAIL, ADDRESS_TELPHONE, ADDRESS_NAME,
+        ADDRESS_PROVINCE_CODE, CREATED_BY, CREATION_TIME, MODIFIED_BY, MODIFICATION_TIME,
+        DELETE_STATUS
+    </sql>
+
+    <insert id="insert" parameterType="com.pramaindia.cust_manag.entity.CompanyAddress">
+        INSERT INTO COMPANY_ADDRESS (
+        ADDRESS_ID, USER_SAP_ID, ADDRESS_COUNTRY_CODE, ADDRESS_PROVINCE, ADDRESS_CITY,
+        ADDRESS_STREET, ADDRESS_ZIPCODE, ADDRESS_TYPE, SHIPTO_ID, DEFAULT_ADDRESS,
+        ADDRESS, ADDRESS_CONTACT, ADDRESS_EMAIL, ADDRESS_TELPHONE, ADDRESS_NAME,
+        ADDRESS_PROVINCE_CODE, CREATED_BY, CREATION_TIME, MODIFIED_BY, MODIFICATION_TIME,
+        DELETE_STATUS
+        ) VALUES (
+        #{addressId}, #{userSapId}, #{addressCountryCode}, #{addressProvince}, #{addressCity},
+        #{addressStreet}, #{addressZipcode}, #{addressType, typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+        #{shiptoId}, #{defaultAddress, typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+        #{address}, #{addressContact}, #{addressEmail}, #{addressTelephone}, #{addressName},
+        #{addressProvinceCode}, #{createdBy}, #{creationTime}, #{modifiedBy}, #{modificationTime},
+        #{deleteStatus, typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+        )
+    </insert>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM COMPANY_ADDRESS
+        WHERE DELETE_STATUS != 'D'
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM COMPANY_ADDRESS
+        WHERE ADDRESS_ID = #{addressId}
+        AND DELETE_STATUS != 'D'
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.pramaindia.cust_manag.entity.CompanyAddress">
+        UPDATE COMPANY_ADDRESS
+        <set>
+            <if test="userSapId != null">USER_SAP_ID = #{userSapId},</if>
+            <if test="addressCountryCode != null">ADDRESS_COUNTRY_CODE = #{addressCountryCode},</if>
+            <if test="addressProvince != null">ADDRESS_PROVINCE = #{addressProvince},</if>
+            <if test="addressCity != null">ADDRESS_CITY = #{addressCity},</if>
+            <if test="addressStreet != null">ADDRESS_STREET = #{addressStreet},</if>
+            <if test="addressZipcode != null">ADDRESS_ZIPCODE = #{addressZipcode},</if>
+            <if test="addressType != null">ADDRESS_TYPE = #{addressType, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="shiptoId != null">SHIPTO_ID = #{shiptoId},</if>
+            <if test="defaultAddress != null">DEFAULT_ADDRESS = #{defaultAddress, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="address != null">ADDRESS = #{address},</if>
+            <if test="addressContact != null">ADDRESS_CONTACT = #{addressContact},</if>
+            <if test="addressEmail != null">ADDRESS_EMAIL = #{addressEmail},</if>
+            <if test="addressTelephone != null">ADDRESS_TELPHONE = #{addressTelephone},</if>
+            <if test="addressName != null">ADDRESS_NAME = #{addressName},</if>
+            <if test="addressProvinceCode != null">ADDRESS_PROVINCE_CODE = #{addressProvinceCode},</if>
+            <if test="modifiedBy != null">MODIFIED_BY = #{modifiedBy},</if>
+            MODIFICATION_TIME = CURRENT_TIMESTAMP,
+            <if test="deleteStatus != null">DELETE_STATUS = #{deleteStatus, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+        </set>
+        WHERE ADDRESS_ID = #{addressId}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM COMPANY_ADDRESS WHERE ADDRESS_ID = #{addressId}
+    </delete>
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*) FROM COMPANY_ADDRESS WHERE DELETE_STATUS != 'D'
+    </select>
+
+</mapper>

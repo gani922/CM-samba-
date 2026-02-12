@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pramaindia.cust_manag.dao.CompanyInfoDAO">
+
+    <resultMap id="BaseResultMap" type="com.pramaindia.cust_manag.entity.CompanyInfo">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="BU_ID" property="buId" jdbcType="BIGINT"/>
+        <result column="COUNTRY_ID" property="countryId" jdbcType="BIGINT"/>
+        <result column="COMPANY_NAME" property="companyName" jdbcType="VARCHAR"/>
+        <result column="DELETE_STATUS" property="deleteStatus" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="IS_ACTIVE" property="isActive" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATION_TIME" property="creationTime" jdbcType="TIMESTAMP"/>
+        <result column="MODIFIED_BY" property="modifiedBy" jdbcType="VARCHAR"/>
+        <result column="MODIFICATION_TIME" property="modificationTime" jdbcType="TIMESTAMP"/>
+        <result column="PROVINCE" property="province" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR"/>
+        <result column="ADDRESS2" property="address2" jdbcType="VARCHAR"/>
+        <result column="ZIPCODE" property="zipcode" jdbcType="VARCHAR"/>
+        <result column="TAX_ID" property="taxId" jdbcType="VARCHAR"/>
+        <result column="VERTICAL_INDUSTRY_TYPE" property="verticalIndustryType" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="SAP_ID" property="sapId" jdbcType="VARCHAR"/>
+        <result column="LOCK_REASON" property="lockReason" jdbcType="VARCHAR"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="LOCATION" property="location" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="MOUNTHLY_TURNOVER" property="monthlyTurnover" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="PANNO_TYPE" property="pannoType" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="PANNO" property="panno" jdbcType="VARCHAR"/>
+        <result column="COMPANY_TYPE" property="companyType" jdbcType="VARCHAR"/>
+        <result column="ADDITION_BUSINESS_TYPE" property="additionBusinessType" jdbcType="VARCHAR"/>
+        <result column="SUB_BU_ID" property="subBuId" jdbcType="BIGINT"/>
+        <result column="CITY" property="city" jdbcType="VARCHAR"/>
+        <result column="STATE_NOTE" property="stateNote" jdbcType="VARCHAR"/>
+        <result column="CITY_NOTE" property="cityNote" jdbcType="VARCHAR"/>
+        <result column="SALE_GROUP" property="saleGroup" jdbcType="VARCHAR"/>
+        <result column="USER_GROUP" property="userGroup" jdbcType="VARCHAR"/>
+        <result column="USER_GRADE" property="userGrade" jdbcType="VARCHAR"/>
+        <result column="USER_AREA" property="userArea" jdbcType="VARCHAR"/>
+        <result column="REGION_ID" property="regionId" jdbcType="VARCHAR"/>
+        <result column="DISTRICT" property="district" jdbcType="VARCHAR"/>
+        <result column="DISTRICT_ID" property="districtId" jdbcType="VARCHAR"/>
+        <result column="SALE_CHANNEL" property="saleChannel" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="HANA_SAP_ID" property="hanaSapId" jdbcType="VARCHAR"/>
+        <result column="SPECIAL_SUPPORT_TIME_START" property="specialSupportTimeStart" jdbcType="INTEGER"/>
+        <result column="SPECIAL_SUPPORT_TIME_END" property="specialSupportTimeEnd" jdbcType="INTEGER"/>
+        <result column="BRANCH_COMPANY" property="branchCompany" jdbcType="VARCHAR"/>
+        <result column="FORCE_KYC_POPUP" property="forceKycPopup" jdbcType="INTEGER"/>
+        <result column="ACCOUNT_DEACTIVE" property="accountDeactive" typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result column="ACCOUNT_DEACTIVE_INFO" property="accountDeactiveInfo" jdbcType="CLOB"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID, BU_ID, COUNTRY_ID, COMPANY_NAME, DELETE_STATUS, IS_ACTIVE, CREATED_BY, CREATION_TIME,
+        MODIFIED_BY, MODIFICATION_TIME, PROVINCE, PHONE, ADDRESS, ADDRESS2, ZIPCODE, TAX_ID,
+        VERTICAL_INDUSTRY_TYPE, STATUS, SAP_ID, LOCK_REASON, EMAIL, LOCATION, MOUNTHLY_TURNOVER,
+        PANNO_TYPE, PANNO, COMPANY_TYPE, ADDITION_BUSINESS_TYPE, SUB_BU_ID, CITY, STATE_NOTE,
+        CITY_NOTE, SALE_GROUP, USER_GROUP, USER_GRADE, USER_AREA, REGION_ID, DISTRICT, DISTRICT_ID,
+        SALE_CHANNEL, HANA_SAP_ID, SPECIAL_SUPPORT_TIME_START, SPECIAL_SUPPORT_TIME_END,
+        BRANCH_COMPANY, FORCE_KYC_POPUP, ACCOUNT_DEACTIVE, ACCOUNT_DEACTIVE_INFO
+    </sql>
+
+    <insert id="insert" parameterType="com.pramaindia.cust_manag.entity.CompanyInfo">
+        INSERT INTO COMPANY_INFO (
+        ID, BU_ID, COUNTRY_ID, COMPANY_NAME, DELETE_STATUS, IS_ACTIVE, CREATED_BY, CREATION_TIME,
+        MODIFIED_BY, MODIFICATION_TIME, PROVINCE, PHONE, ADDRESS, ADDRESS2, ZIPCODE, TAX_ID,
+        VERTICAL_INDUSTRY_TYPE, STATUS, SAP_ID, LOCK_REASON, EMAIL, LOCATION, MOUNTHLY_TURNOVER,
+        PANNO_TYPE, PANNO, COMPANY_TYPE, ADDITION_BUSINESS_TYPE, SUB_BU_ID, CITY, STATE_NOTE,
+        CITY_NOTE, SALE_GROUP, USER_GROUP, USER_GRADE, USER_AREA, REGION_ID, DISTRICT, DISTRICT_ID,
+        SALE_CHANNEL, HANA_SAP_ID, SPECIAL_SUPPORT_TIME_START, SPECIAL_SUPPORT_TIME_END,
+        BRANCH_COMPANY, FORCE_KYC_POPUP, ACCOUNT_DEACTIVE, ACCOUNT_DEACTIVE_INFO
+        ) VALUES (
+        #{id}, #{buId}, #{countryId}, #{companyName}, #{deleteStatus, typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+        #{isActive, typeHandler=org.apache.ibatis.type.EnumTypeHandler}, #{createdBy}, #{creationTime},
+        #{modifiedBy}, #{modificationTime}, #{province}, #{phone}, #{address}, #{address2}, #{zipcode}, #{taxId},
+        #{verticalIndustryType}, #{status, typeHandler=org.apache.ibatis.type.EnumTypeHandler}, #{sapId}, #{lockReason}, #{email},
+        #{location, typeHandler=org.apache.ibatis.type.EnumTypeHandler}, #{monthlyTurnover, typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+        #{pannoType, typeHandler=org.apache.ibatis.type.EnumTypeHandler}, #{panno}, #{companyType}, #{additionBusinessType}, #{subBuId}, #{city}, #{stateNote},
+        #{cityNote}, #{saleGroup}, #{userGroup}, #{userGrade}, #{userArea}, #{regionId}, #{district}, #{districtId},
+        #{saleChannel, typeHandler=org.apache.ibatis.type.EnumTypeHandler}, #{hanaSapId}, #{specialSupportTimeStart}, #{specialSupportTimeEnd},
+        #{branchCompany}, #{forceKycPopup}, #{accountDeactive, typeHandler=org.apache.ibatis.type.EnumTypeHandler}, #{accountDeactiveInfo}
+        )
+    </insert>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM COMPANY_INFO
+        WHERE DELETE_STATUS != 'D'
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM COMPANY_INFO
+        WHERE ID = #{id}
+        AND DELETE_STATUS != 'D'
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.pramaindia.cust_manag.entity.CompanyInfo">
+        UPDATE COMPANY_INFO
+        <set>
+            <if test="buId != null">BU_ID = #{buId},</if>
+            <if test="countryId != null">COUNTRY_ID = #{countryId},</if>
+            <if test="companyName != null">COMPANY_NAME = #{companyName},</if>
+            <if test="deleteStatus != null">DELETE_STATUS = #{deleteStatus, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="isActive != null">IS_ACTIVE = #{isActive, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="modifiedBy != null">MODIFIED_BY = #{modifiedBy},</if>
+            MODIFICATION_TIME = CURRENT_TIMESTAMP,
+            <if test="province != null">PROVINCE = #{province},</if>
+            <if test="phone != null">PHONE = #{phone},</if>
+            <if test="address != null">ADDRESS = #{address},</if>
+            <if test="address2 != null">ADDRESS2 = #{address2},</if>
+            <if test="zipcode != null">ZIPCODE = #{zipcode},</if>
+            <if test="taxId != null">TAX_ID = #{taxId},</if>
+            <if test="verticalIndustryType != null">VERTICAL_INDUSTRY_TYPE = #{verticalIndustryType},</if>
+            <if test="status != null">STATUS = #{status, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="sapId != null">SAP_ID = #{sapId},</if>
+            <if test="lockReason != null">LOCK_REASON = #{lockReason},</if>
+            <if test="email != null">EMAIL = #{email},</if>
+            <if test="location != null">LOCATION = #{location, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="monthlyTurnover != null">MOUNTHLY_TURNOVER = #{monthlyTurnover, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="pannoType != null">PANNO_TYPE = #{pannoType, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="panno != null">PANNO = #{panno},</if>
+            <if test="companyType != null">COMPANY_TYPE = #{companyType},</if>
+            <if test="additionBusinessType != null">ADDITION_BUSINESS_TYPE = #{additionBusinessType},</if>
+            <if test="subBuId != null">SUB_BU_ID = #{subBuId},</if>
+            <if test="city != null">CITY = #{city},</if>
+            <if test="stateNote != null">STATE_NOTE = #{stateNote},</if>
+            <if test="cityNote != null">CITY_NOTE = #{cityNote},</if>
+            <if test="saleGroup != null">SALE_GROUP = #{saleGroup},</if>
+            <if test="userGroup != null">USER_GROUP = #{userGroup},</if>
+            <if test="userGrade != null">USER_GRADE = #{userGrade},</if>
+            <if test="userArea != null">USER_AREA = #{userArea},</if>
+            <if test="regionId != null">REGION_ID = #{regionId},</if>
+            <if test="district != null">DISTRICT = #{district},</if>
+            <if test="districtId != null">DISTRICT_ID = #{districtId},</if>
+            <if test="saleChannel != null">SALE_CHANNEL = #{saleChannel, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="hanaSapId != null">HANA_SAP_ID = #{hanaSapId},</if>
+            <if test="specialSupportTimeStart != null">SPECIAL_SUPPORT_TIME_START = #{specialSupportTimeStart},</if>
+            <if test="specialSupportTimeEnd != null">SPECIAL_SUPPORT_TIME_END = #{specialSupportTimeEnd},</if>
+            <if test="branchCompany != null">BRANCH_COMPANY = #{branchCompany},</if>
+            <if test="forceKycPopup != null">FORCE_KYC_POPUP = #{forceKycPopup},</if>
+            <if test="accountDeactive != null">ACCOUNT_DEACTIVE = #{accountDeactive, typeHandler=org.apache.ibatis.type.EnumTypeHandler},</if>
+            <if test="accountDeactiveInfo != null">ACCOUNT_DEACTIVE_INFO = #{accountDeactiveInfo},</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM COMPANY_INFO WHERE ID = #{id}
+    </delete>
+
+</mapper>
